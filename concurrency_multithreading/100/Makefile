@@ -2,6 +2,7 @@ MAKEFILE_DIR := $(dir $(abspath $(firstword $(MAKEFILE_LIST))))
 PROJDIR := $(abspath $(MAKEFILE_DIR)/../..)
 CONTRIB_DIR := $(abspath $(PROJDIR)/contrib)
 GTEST_DIR := $(abspath $(CONTRIB_DIR)/googletest_install)
+OUT_DIR := $(abspath $(MAKEFILE_DIR)/out)
 CXX := clang++
 CXXFLAGS += -I"$(PROJDIR)" -Wall -g -std=c++20
 
@@ -9,18 +10,19 @@ CXXFLAGS += -I$(GTEST_DIR)/include
 LDFLAGS += -L$(GTEST_DIR)/lib -lgtest -lgtest_main -pthread
 
 SRCS = attempt.cc
-OBJS = $(SRCS:.cc=.o)
+OBJS := $(patsubst %.cc,$(OUT_DIR)/%.o,$(SRCS))
 
 ANS_SRCS = answer.cc
-ANS_OBJS = $(ANS_SRCS:.cc=.o)
+ANS_OBJS := $(patsubst %.cc,$(OUT_DIR)/%.o,$(ANS_SRCS))
 
-%.o: %.cc
+$(OUT_DIR)/%.o: %.cc
+	mkdir -p $(OUT_DIR)
 	$(CXX) $(CXXFLAGS) -c $< -o $@
 
 TEST_SOURCES = 100_test.cc
-TEST_OBJECTS = $(TEST_SOURCES:.cc=.o)
-TEST_EXECUTABLE = 100_test
-TEST_ANS_EXECUTABLE = 100_ans_test
+TEST_OBJECTS := $(patsubst %.cc,$(OUT_DIR)/%.o,$(TEST_SOURCES))
+TEST_EXECUTABLE = $(OUT_DIR)/100_test
+TEST_ANS_EXECUTABLE = $(OUT_DIR)/100_ans_test
 
 $(TEST_EXECUTABLE): $(TEST_OBJECTS) $(OBJS)
 	$(CXX) $(LDFLAGS) $^ -o $@
@@ -30,12 +32,10 @@ $(TEST_ANS_EXECUTABLE): $(TEST_OBJECTS) $(ANS_OBJS)
 
 .PHONY: test
 test: $(TEST_EXECUTABLE)
-	./$(TEST_EXECUTABLE)
+	$(TEST_EXECUTABLE)
 
 answer_test: $(TEST_ANS_EXECUTABLE)
-	./$(TEST_ANS_EXECUTABLE)
+	$(TEST_ANS_EXECUTABLE)
 
 clean:
-	rm *.o 2>/dev/null || true
-	rm 100_test 2>/dev/null || true
-	rm 100_ans_test 2>/dev/null || true
+	rm -r out/ 2>/dev/null || true
