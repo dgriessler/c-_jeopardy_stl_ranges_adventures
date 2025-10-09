@@ -1,0 +1,6 @@
+{
+    "editor.formatOnSave": true,
+    "editor.defaultFormatter": "ms-vscode.cpptools",
+    "editor.wordWrapColumn": 100,
+    "editor.wordWrap": "on"
+}
