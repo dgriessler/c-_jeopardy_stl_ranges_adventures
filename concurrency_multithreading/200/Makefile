@@ -7,7 +7,7 @@ CXX := clang++
 CXXFLAGS += -I"$(PROJDIR)" -Wall -g -std=c++20
 
 CXXFLAGS += -I$(GTEST_DIR)/include
-LDFLAGS += -L$(GTEST_DIR)/lib -lgtest -lgtest_main -pthread
+LDFLAGS += -L$(GTEST_DIR)/lib -lgtest -lgmock -lgtest_main -pthread
 
 SRCS = attempt.cc
 OBJS := $(patsubst %.cc,$(OUT_DIR)/%.o,$(SRCS))
@@ -25,10 +25,10 @@ TEST_EXECUTABLE = $(OUT_DIR)/200_test
 TEST_ANS_EXECUTABLE = $(OUT_DIR)/200_ans_test
 
 $(TEST_EXECUTABLE): $(TEST_OBJECTS) $(OBJS)
-	$(CXX) $(LDFLAGS) $^ -o $@
+	$(CXX) $^ -o $@ $(LDFLAGS)
 
 $(TEST_ANS_EXECUTABLE): $(TEST_OBJECTS) $(ANS_OBJS)
-	$(CXX) $(LDFLAGS) $^ -o $@
+	$(CXX) $^ -o $@ $(LDFLAGS)
 
 .PHONY: test
 test: $(TEST_EXECUTABLE)

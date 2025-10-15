@@ -1,0 +1,9 @@
+#pragma once
+
+#include <string>
+#include <unordered_map>
+#include <vector>
+
+// Count word frequencies in an unordered_map.
+std::unordered_map<std::string, std::size_t>
+count_freqs(const std::vector<std::string> &words);

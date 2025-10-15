@@ -19,10 +19,10 @@ $(OUT_DIR)/%.o: %.cc
 	mkdir -p $(OUT_DIR)
 	$(CXX) $(CXXFLAGS) -c $< -o $@
 
-TEST_SOURCES = 100_test.cc
+TEST_SOURCES = 300_test.cc
 TEST_OBJECTS := $(patsubst %.cc,$(OUT_DIR)/%.o,$(TEST_SOURCES))
-TEST_EXECUTABLE = $(OUT_DIR)/100_test
-TEST_ANS_EXECUTABLE = $(OUT_DIR)/100_ans_test
+TEST_EXECUTABLE = $(OUT_DIR)/300_test
+TEST_ANS_EXECUTABLE = $(OUT_DIR)/300_ans_test
 
 $(TEST_EXECUTABLE): $(TEST_OBJECTS) $(OBJS)
 	$(CXX) $^ -o $@ $(LDFLAGS)
