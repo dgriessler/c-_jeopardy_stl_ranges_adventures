@@ -39,6 +39,7 @@
         "variant": "cpp",
         "algorithm": "cpp",
         "expected": "cpp",
-        "numbers": "cpp"
+        "numbers": "cpp",
+        "queue": "cpp"
     }
 }
