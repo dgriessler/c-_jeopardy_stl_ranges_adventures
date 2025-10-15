@@ -38,6 +38,7 @@
         "typeinfo": "cpp",
         "variant": "cpp",
         "algorithm": "cpp",
-        "expected": "cpp"
+        "expected": "cpp",
+        "numbers": "cpp"
     }
 }
