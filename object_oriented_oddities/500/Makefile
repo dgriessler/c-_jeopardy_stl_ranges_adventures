@@ -7,6 +7,9 @@ CXX := clang++
 CXXFLAGS += -I"$(PROJDIR)" -Wall -g -std=c++20
 
 CXXFLAGS += -I$(GTEST_DIR)/include
+ifeq ($(ANSWER),1)
+CXXFLAGS += -DANSWER=1
+endif
 LDFLAGS += -L$(GTEST_DIR)/lib -lgtest -lgmock -lgtest_main -pthread
 
 SRCS = attempt.cc
@@ -30,11 +33,17 @@ $(TEST_EXECUTABLE): $(TEST_OBJECTS) $(OBJS)
 $(TEST_ANS_EXECUTABLE): $(TEST_OBJECTS) $(ANS_OBJS)
 	$(CXX) $^ -o $@ $(LDFLAGS)
 
-.PHONY: test answer_test
-test: $(TEST_EXECUTABLE)
+.PHONY: test inner_test answer_test inner_answer_test
+test: clean
+	$(MAKE) inner_test
+
+inner_test: $(TEST_EXECUTABLE)
 	$(TEST_EXECUTABLE)
 
-answer_test: $(TEST_ANS_EXECUTABLE)
+answer_test: clean
+	$(MAKE) ANSWER=1 inner_answer_test
+
+inner_answer_test: $(TEST_ANS_EXECUTABLE)
 	$(TEST_ANS_EXECUTABLE)
 
 clean:
